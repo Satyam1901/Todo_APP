@@ -1,10 +1,14 @@
-
 const { createTodo, updateTodo } = require("./types"); //object destructing import code
 const { todo } = require("./db");
-const express = require('express')
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
-
+//This CORS example required to hitting oriigin of specific URL like in this case it's localhost:5173, if we allow Universal just put app.use(cors())
+app.use(
+  cors({
+  })
+);
 app.use(express.json());
 
 app.post("/todo", async function (req, res) {
@@ -27,9 +31,7 @@ app.post("/todo", async function (req, res) {
     msg: "ToDO Created",
   });
 });
-
-
-
+//Good Approach to Write the Code...
 // app.get("/todos", async function (req, res) {
 //     try {
 //       const todos = await todo.find({}); // Fetch todos from the database
@@ -43,11 +45,9 @@ app.post("/todo", async function (req, res) {
 //   });
 
 app.get("/todos", async function (req, res) {
-    const todos = await todo.find({});
-     res.json({todos})
-   });
-
-
+  const todos = await todo.find({});
+  res.json({ todos });
+});
 
 app.put("/todo", async function (req, res) {
   const completeTodo = res.body;
@@ -66,9 +66,9 @@ app.put("/todo", async function (req, res) {
       completed: true,
     }
   );
-res.json({
-    msg: "Todo Marked Completed"
-})
+  res.json({
+    msg: "Todo Marked Completed",
+  });
 });
 
-app.listen(3000)
+app.listen(3000);
