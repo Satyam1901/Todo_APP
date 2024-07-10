@@ -8,6 +8,7 @@ const [todos,setTodos] = useState([]);
 
 useEffect(() => {
 fetchData();
+
 },[]) 
 
 const fetchData = () =>{
@@ -19,7 +20,7 @@ const fetchData = () =>{
 
   return <>
    <CreateTodo />
-   <Todos todos={todos}/>
+   <Todos todos={todos} />
   </>;
 }
 

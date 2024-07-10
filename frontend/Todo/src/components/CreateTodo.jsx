@@ -4,18 +4,24 @@ function CreateTodo() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  function Data() {
+  function handleAddTodo() {
+    // Check if title and description are not empty before sending data
+    if (!title.trim() || !description.trim()) {
+      alert("Please enter a title and description");
+      return; // Exit the function if fields are empty
+    }
+
     fetch("http://localhost:3000/todo", {
       method: "POST",
       body: JSON.stringify({
-        title: title,
-        description: description,
+        title,
+        description,
       }),
       headers: {
         "Content-Type": "application/json",
       },
     })
-      .then(async function (res) {
+      .then(async (res) => {
         // eslint-disable-next-line no-unused-vars
         const json = await res.json();
         alert("Todo Added");
@@ -34,14 +40,19 @@ function CreateTodo() {
         placeholder="Title"
         className="mb-4 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2"
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
       <input
         type="text"
         placeholder="Description"
         className="mb-4 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         onChange={(e) => setDescription(e.target.value)}
+        required
       />
-      <button className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={Data}>
+      <button
+        className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        onClick={handleAddTodo} // Call the new handleAddTodo function
+      >
         Add a Todo
       </button>
     </div>

@@ -49,26 +49,40 @@ app.get("/todos", async function (req, res) {
   res.json({ todos });
 });
 
-app.put("/todo", async function (req, res) {
-  const completeTodo = res.body;
-  const parsedCompletePayload = updateTodo.safeParse(updateTodo);
+app.put("/statustodo", async function (req, res) {
+  const completeTodo = req.body; // Correctly access the request body
+  const parsedCompletePayload = updateTodo.safeParse(completeTodo); // Parse the request body
 
-  if (!parsedCompletePayload.success0) {
-    res.status(411).json({
-      msg: "You Sent wrong inputs",
+  if (!parsedCompletePayload.success) {
+    return res.status(411).json({
+      msg: "You sent wrong inputs",
     });
   }
-  await todo.update(
-    {
-      _id: req.body._id,
-    },
-    {
-      completed: true,
-    }
-  );
-  res.json({
-    msg: "Todo Marked Completed",
-  });
+
+  else if (parsedCompletePayload.success === true) {
+    return res.status(208).json({
+      msg: "Already Completed",
+    });
+  }
+  try {
+    await todo.updateOne(
+      {
+        _id: req.body._id,
+      },
+      {
+        completed: true,
+      }
+    );
+
+    res.json({
+      msg: "Todo Marked Completed",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "Internal Server Error",
+      error: error.message,
+    });
+  }
 });
 
 app.listen(3000);

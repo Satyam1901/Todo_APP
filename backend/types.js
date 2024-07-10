@@ -6,7 +6,7 @@ const zod = require('zod');
  })
 
  const updateTodo = zod.object({
-id: zod.string(),
+_id: zod.string(),
  })
 
  const completeTodo = zod.object({
